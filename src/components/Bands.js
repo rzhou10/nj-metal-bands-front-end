@@ -23,8 +23,8 @@ function Bands() {
   }, [sortOrder]);
 
   return (
-    <div style={{ width: '50%', marginLeft: 'auto', marginRight: 'auto', marginBottom: '30px', marginTop: '30px' }}>
-      <Row>
+    <div style={{ width: '70%', marginLeft: 'auto', marginRight: 'auto', marginBottom: '30px', marginTop: '30px' }}>
+      <Row className='d-flex justify-content-between'>
         <Col sm={6} className='d-flex'>
 
           <span style={{ marginTop: 'auto', marginBottom: 'auto', marginRight: '5px' }}>
@@ -39,7 +39,7 @@ function Bands() {
           </Form.Select>
         </Col>
 
-        <Col sm={6}>
+        <Col sm={6} className='d-flex'>
           <span style={{ marginTop: 'auto', marginBottom: 'auto', marginRight: '5px' }}>
             Have a band to add?
           </span>
@@ -49,7 +49,7 @@ function Bands() {
           }}>Add Band</Button>
         </Col>
       </Row>
-      <div style={{display: 'grid', marginTop: '50px'}}>
+      <div className={'d-flex gap-2'} style={{marginTop: '50px'}}>
         {bands.map((b, index) => <BandCard band={b} key={index}/>)}
       </div>
     </div>

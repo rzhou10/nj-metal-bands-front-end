@@ -1,31 +1,31 @@
 import { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { toggleMain } from '../features/switch';
 import axios from 'axios';
 import BandCard from './BandCard';
-import { Button, Col, Form, Row } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
 
 function Bands() {
   const [sortOrder, setSortOrder] = useState('band_name');
-  const [bands, setBands] = useState([{ band_name: 'Overkill', year_formation: 1, genre: 'Thrash Metal', city: "Old Bridge" }]);
-  const showMain = useSelector(state => state.switchPage.value);
+  const [bands, setBands] = useState([]);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // axios("http://localhost:8080/fetch-bands", {
-    //   method: 'GET',
-    //   data: { sortOrder: sortOrder }
-    // }).then((result) => {
-    //   setBands(result);
-    // }).catch((e) => {
-    //   console.log(e.message);
-    // })
+    axios({
+      url: `${process.env.REACT_APP_BACKEND_URL}fetch-bands/${sortOrder}`,
+      method: 'GET',
+      data: { sortOrder: sortOrder }
+    }).then((result) => {
+      setBands(result.data);
+    }).catch((e) => {
+      console.log(e.message);
+    })
   }, [sortOrder]);
 
   return (
     <div style={{ width: '70%', marginLeft: 'auto', marginRight: 'auto', marginBottom: '30px', marginTop: '30px' }}>
-      <Row className='d-flex justify-content-between'>
-        <Col sm={6} className='d-flex'>
+      <div className='d-flex justify-content-between'>
+        <div className='d-flex'>
 
           <span style={{ marginTop: 'auto', marginBottom: 'auto', marginRight: '5px' }}>
             Sort:
@@ -37,9 +37,9 @@ function Bands() {
             <option value={'year_formation'}>Year of Formation</option>
             <option value={'city'}>City</option>
           </Form.Select>
-        </Col>
+        </div>
 
-        <Col sm={6} className='d-flex'>
+        <div sm={6} className='d-flex'>
           <span style={{ marginTop: 'auto', marginBottom: 'auto', marginRight: '5px' }}>
             Have a band to add?
           </span>
@@ -47,9 +47,9 @@ function Bands() {
             e.preventDefault();
             dispatch(toggleMain(false));
           }}>Add Band</Button>
-        </Col>
-      </Row>
-      <div className={'d-flex gap-2'} style={{marginTop: '50px'}}>
+        </div>
+      </div>
+      <div className={'d-flex flex-wrap gap-4 justify-content-center'} style={{marginTop: '50px'}}>
         {bands.map((b, index) => <BandCard band={b} key={index}/>)}
       </div>
     </div>

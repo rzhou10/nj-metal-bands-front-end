@@ -3,7 +3,7 @@ import { Card, Col } from "react-bootstrap";
 function BandCard(props) {
 
   return (
-    <Col sm={2} md={4}>
+    <Col sm={12} md={4}>
       <Card className="band-card">
         <Card.Body>
           <h2>{props.band.band_name}</h2>

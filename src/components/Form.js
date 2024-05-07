@@ -5,13 +5,18 @@ import { useState } from 'react';
 import axios from 'axios';
 
 const submit = async (band) => {
-  axios('').then((result) => {
-    //
-    return true;
-  }).catch((e) => {
-    console.log(e.message);
-    return false;
+  return new Promise((resolve, reject) => {
+    axios({ url: `${process.env.REACT_APP_BACKEND_URL}insert-bands`, method: 'POST', data: band }).then((result) => {
+      if (result.data === 'Horray') {
+        resolve(true);
+      } else {
+        resolve(false);
+      }
+    }).catch((e) => {
+      reject(false);
+    })
   })
+
 }
 
 function Forms() {
@@ -45,7 +50,7 @@ function Forms() {
             e.preventDefault();
             setGenre(e.target.value);
           }} />
-        <Form.Label>Band Name:</Form.Label>
+        <Form.Label>City:</Form.Label>
         <Form.Control defaultValue={city}
           onBlur={(e) => {
             e.preventDefault();
@@ -62,9 +67,7 @@ function Forms() {
               genre: genre,
               city: city
             }).then((res) => {
-              console.log(res);
               if (res) {
-      
                 setShowSuccessAlert(true);
                 setTimeout(() => {
                   dispatch(toggleMain(true));
@@ -83,18 +86,16 @@ function Forms() {
           <div>
             <Button onClick={(e) => {
               e.preventDefault();
-              submit().then(() => {
-                dispatch(toggleMain(true));
-              })
+              dispatch(toggleMain(true));
             }}>Back</Button>
 
           </div>
         </Col>
       </Row>
-      {showSuccessAlert ? <div className="alert alert-primary" role="alert">
+      {showSuccessAlert ? <div className="alert alert-primary mt-3" role="alert">
         Band successfully added!
       </div> : null}
-      {showFailedAlert ? <div className="alert alert-danger" role="alert">
+      {showFailedAlert ? <div className="alert alert-danger mt-3" role="alert">
         Band failed to add.
       </div> : null}
     </div>
